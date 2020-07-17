@@ -21,4 +21,4 @@ compile:
 	rm -f *.lst
 
 program: clean compile
-	pk2cmd -P $(P) -X -M -F main.hex -T
+	pk2cmd -P $(P) -F main.hex -X -M -R -T
