@@ -1,3 +1,0 @@
- - Bus trancievers for address/data lines in order to disconnect the CPU from the bus, to allow the micro to read/write devices on the bus
-   - Actually maybe we don't need this since we have the BE input? (although I believe it's tied to VCC but that should be fine?)
- 
