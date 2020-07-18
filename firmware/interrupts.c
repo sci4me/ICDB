@@ -1,0 +1,8 @@
+DEF_INTHIGH(sigHP)
+	
+END_DEF
+
+
+DEF_INTLOW(sigLP)
+
+END_DEF	

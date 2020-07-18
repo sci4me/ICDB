@@ -5,7 +5,7 @@
 
 #pragma config XINST	= OFF 				// No Extended ISA
 #pragma config WDT 		= OFF 				// No Watchdog Timer
-#pragma config LVP 		= OFF 				// No Low-Voltage Programming
+#pragma config LVP 		= ON 				// Low-Voltage Programming
 #pragma config BOR 		= OFF				// No Brown-out-Reset
 #pragma config MCLRE 	= ON  				// MCLR Reset
 #pragma config FCMEN 	= OFF 				// No Failsafe Clock Monitor
