@@ -4,3 +4,7 @@ typedef long s32;
 typedef unsigned char u8;
 typedef unsigned int u16;
 typedef unsigned long u32;
+
+
+#define INPUT 		1
+#define OUTPUT 		0

@@ -3,7 +3,8 @@ void uart_init(void) {
 	TRISC |= 0xC0;
 	TXSTA = 0x24;
 	RCSTA = 0x90;
-	SPBRG = 25; // Roughly 115200 bps at 48 MHz
+	BAUDCON = 0x00;
+	SPBRG = 12; // Roughly 38400 bps at 8 MHz
 	SPBRGH = 0;
 }
 
