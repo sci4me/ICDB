@@ -15,9 +15,7 @@ void print_state(void) {
 	if(read_rw()) {
 		data = get_data_bus();
 	} else {
-		set_data_bus_mode(INPUT);
 		data = read_data_bus();
-		set_data_bus_mode(OUTPUT); // ehhmhmeh
 	}
 
 	u16 addr = read_address_bus();
@@ -82,71 +80,16 @@ void main(void) {
 	reset_cpu();
 
 
+	print_state();
+
+
 	while(1) {
-		set_data_bus_mode(INPUT);
-
-
 		delay10ktcy(2);
 		CPU_CLK = 0;
 
 		
-		// Make sure we cover tADS
-		delay1ktcy(1);
-
-
-		if(read_rw()) {
-			// CPU is reading
-
-			u16 addr = read_address_bus();
-			
-			u8 val;
-			switch(addr) {
-				case 0xFFFC:
-					val = 0x00;
-					break;
-				case 0xFFFD:
-					val = 0x20;
-					break;
-				case 0x2000:
-					val = 0xA9; // LDA
-					break;
-				case 0x2001:
-					val = 0x69;
-					break;
-				case 0x2002:
-					val = 0x8D; // STA
-					break;
-				case 0x2003:
-					val = 0x00;
-					break;
-				case 0x2004:
-					val = 0x60;
-					break;
-				case 0x2005:
-					val = 0x80; // BRA
-					break;
-				case 0x2006:
-					val = -2;
-					break;
-				default:
-					val = 0xEA;
-					break;
-			}
-
-			set_data_bus_mode(OUTPUT);
-			set_data_bus(val);	
-		} else {
-			// CPU is writing
-		}
-
-
-
 		delay10ktcy(2);
 		CPU_CLK = 1;
-
-	
-		// Some extra buffer, just in case
-		delay1ktcy(1);
 
 
 		print_state();

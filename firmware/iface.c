@@ -107,7 +107,14 @@ typedef union {
 
 void reset_cpu() {
 	CPU_RST = 0;
-	delay1ktcy(50);
+	delay1ktcy(2);
+	for(u8 i = 0; i < 10; i++) {
+		CPU_CLK = 0;
+		delay1ktcy(2);
+		CPU_CLK = 1;
+		delay1ktcy(2);
+	}
+	delay1ktcy(2);
 	CPU_RST = 1;
 }
 
@@ -244,14 +251,14 @@ void set_address_bus_mode(u8 mode) {
 }
 
 void iface_init(void) {
-	CPU_CLK = 1;
-
 	TRISDbits.TRISD4 = OUTPUT; 	// CPU_CLK = OUTPUT
 	TRISAbits.TRISA6 = OUTPUT; 	// CPU_RST = OUTPUT
 
 	// 10.3: RC4 and RC5 do not have TRIS bits.
 	// TRISC |= CPU_RW;			// CPU_RW = INPUT
 	// TRISC |= CPU_IRQ;		// CPU_IRQ = INPUT
+
+	CPU_CLK = 1;
 
 	set_data_bus_mode(INPUT);
 	set_address_bus_mode(INPUT);
