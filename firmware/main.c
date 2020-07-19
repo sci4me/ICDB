@@ -67,8 +67,8 @@ void main(void) {
 	SPPCON 					= 0; 	// No SPP
 	UCONbits.SUSPND 		= 0; 	// 17.2: SUSPND must be clear before clearing USBEN
 	UCONbits.USBEN			= 0;	// No USB
-	UCFGbits.UPUEN 			= 0;	//
-	UCFGbits.UTRDIS 		= 0;	//
+	UCFGbits.UPUEN 			= 0;	// No USB pull-ups
+	UCFGbits.UTRDIS 		= 1;	// No On-Chip Tranciever
 
 
 
@@ -83,9 +83,6 @@ void main(void) {
 
 
 	while(1) {
-		uart_getc(); // block for input
-
-
 		set_data_bus_mode(INPUT);
 
 
@@ -105,10 +102,31 @@ void main(void) {
 			u8 val;
 			switch(addr) {
 				case 0xFFFC:
-					val = 0x42;
+					val = 0x00;
 					break;
 				case 0xFFFD:
+					val = 0x20;
+					break;
+				case 0x2000:
+					val = 0xA9; // LDA
+					break;
+				case 0x2001:
 					val = 0x69;
+					break;
+				case 0x2002:
+					val = 0x8D; // STA
+					break;
+				case 0x2003:
+					val = 0x00;
+					break;
+				case 0x2004:
+					val = 0x60;
+					break;
+				case 0x2005:
+					val = 0x80; // BRA
+					break;
+				case 0x2006:
+					val = -2;
 					break;
 				default:
 					val = 0xEA;
@@ -122,11 +140,14 @@ void main(void) {
 		}
 
 
-		print_state();
-
 
 		delay10ktcy(2);
 		CPU_CLK = 1;
+
+	
+		// Some extra buffer, just in case
+		delay1ktcy(1);
+
 
 		print_state();
 	}

@@ -1,8 +1,10 @@
 #define CPU_CLK 		LATDbits.LATD4
 #define CPU_RST  		LATAbits.LATA6
 // God damnit, SDCC...
-#define CPU_RW			0x10 // PORTC5
-#define CPU_IRQ 		0x08 // PORTC4
+//#define CPU_RW			0x20 // PORTC5
+//#define CPU_IRQ 		0x10 // PORTC4
+#define CPU_RW			PORTCbits.RC5
+#define CPU_IRQ 		PORTCbits.RC4
 
 #define CPU_D0 			PORTBbits.RB4
 #define CPU_D1 			PORTBbits.RB3 
@@ -99,16 +101,9 @@ typedef union {
 
 
 #define set_clk(value) CPU_CLK = value
-// #define read_rw() ((PORTC & CPU_RW) != 0)
-// #define read_irq() ((PORTC & CPU_IRQ) != 0)
+#define read_rw() CPU_RW
+#define read_irq() CPU_IRQ
 
-u8 read_rw() {
-	return (PORTC & CPU_RW) != 0;
-}
-
-u8 read_irq() {
-	return (PORTC & CPU_IRQ) != 0;
-}
 
 void reset_cpu() {
 	CPU_RST = 0;
@@ -249,15 +244,14 @@ void set_address_bus_mode(u8 mode) {
 }
 
 void iface_init(void) {
-	// TODO: Clean this stuff up.
+	CPU_CLK = 1;
+
 	TRISDbits.TRISD4 = OUTPUT; 	// CPU_CLK = OUTPUT
 	TRISAbits.TRISA6 = OUTPUT; 	// CPU_RST = OUTPUT
 
 	// 10.3: RC4 and RC5 do not have TRIS bits.
 	// TRISC |= CPU_RW;			// CPU_RW = INPUT
 	// TRISC |= CPU_IRQ;		// CPU_IRQ = INPUT
-
-	CPU_CLK = 1;
 
 	set_data_bus_mode(INPUT);
 	set_address_bus_mode(INPUT);

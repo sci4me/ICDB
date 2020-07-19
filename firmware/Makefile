@@ -4,7 +4,7 @@ PROC=18f4550
 P=PIC18F4550
 
 
-.PHONY: all clean compile program usbreset
+.PHONY: all clean compile program usbreset off on
 
 
 all: clean compile
@@ -26,3 +26,13 @@ program: clean compile usbreset
 
 usbreset:
 	$(MAKE) -C usbreset
+
+off: usbreset
+	sudo ./usbreset.sh
+	pk2cmd -P $(P)
+	sudo ./usbreset.sh
+
+on:	usbreset
+	sudo ./usbreset.sh
+	pk2cmd -P $(P) -R -T
+	sudo ./usbreset.sh
