@@ -1,6 +1,6 @@
 #pragma config FOSC 	= INTOSCIO_EC		// 8 MHz Internal Clock
 #pragma config PLLDIV 	= 1 				// Unused
-#pragma config CPUDIV   = OSC1_PLL2 		// 8 / 2 = 8 MHz Core Clock
+#pragma config CPUDIV   = OSC1_PLL2 		// Unused
 #pragma config USBDIV 	= 2					// Unused
 
 #pragma config XINST	= OFF 				// No Extended ISA

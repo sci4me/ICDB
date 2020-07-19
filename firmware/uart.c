@@ -30,3 +30,11 @@ u8 uart_getc(void) {
 	}
 	return RCREG;
 }
+
+
+__code u8 hex_lut[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+void uart_put_hex_byte(u8 b) {
+	uart_putc(hex_lut[(b >> 4) & 0xF]);
+	uart_putc(hex_lut[b & 0xF]);
+}
