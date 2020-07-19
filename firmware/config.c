@@ -1,7 +1,7 @@
-#pragma config FOSC 	= ECPLLIO_EC		// 24 MHz External Clock
-#pragma config PLLDIV 	= 6 				// 24 / 6 = 4 MHz PLL Input
-#pragma config CPUDIV   = OSC1_PLL2 		// 96 / 2 = 48 MHz Core Clock
-#pragma config USBDIV 	= 2					// 96 / 2 = 48 MHz USB Clock
+#pragma config FOSC 	= INTOSCIO_EC		// 8 MHz Internal Clock
+#pragma config PLLDIV 	= 1 				// Unused
+#pragma config CPUDIV   = OSC1_PLL2 		// 8 / 2 = 8 MHz Core Clock
+#pragma config USBDIV 	= 2					// Unused
 
 #pragma config XINST	= OFF 				// No Extended ISA
 #pragma config WDT 		= OFF 				// No Watchdog Timer
@@ -14,3 +14,4 @@
 #pragma config VREGEN 	= OFF 				// No USB Voltage Regulation
 #pragma config PBADEN 	= OFF 				// No PORTB ADC
 #pragma config DEBUG 	= OFF 				// No debugging :(
+#pragma config ICPRT	= OFF				// No dedicated ICPRT

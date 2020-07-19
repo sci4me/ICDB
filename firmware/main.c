@@ -13,10 +13,34 @@
 #define OUTPUT 		0
 
 
-// TODO: We'd much rather just say RD3 than PORTDbits.RD3, etc.
-#define LED_DIR 	TRISDbits.TRISD3
-#define LED_OFF 	PORTDbits.RD3 = 0
-#define LED_ON 		PORTDbits.RD3 = 1
+#define CPU_D0 		PORTBbits.RB4
+#define CPU_D1 		PORTBbits.RB3 
+#define CPU_D2 		PORTBbits.RB2
+#define CPU_D3 		PORTBbits.RB1
+#define CPU_D4 		PORTBbits.RB0
+#define CPU_D5 		PORTDbits.RD7
+#define CPU_D6 		PORTDbits.RD6
+#define CPU_D7 		PORTDbits.RD5
+#define CPU_CLK 	PORTDbits.RD4
+#define CPU_RST  	PORTAbits.RA6
+#define CPU_RW		0x10 // God damnit, SDCC...
+#define CPU_IRQ 	0x08
+#define CPU_A0 		PORTAbits.RA0
+#define CPU_A1 		PORTAbits.RA1
+#define CPU_A2 		PORTAbits.RA2
+#define CPU_A3 		PORTAbits.RA3
+#define CPU_A4 		PORTAbits.RA4
+#define CPU_A5 		PORTAbits.RA5
+#define CPU_A6 		PORTEbits.RE0
+#define CPU_A7 		PORTEbits.RE1
+#define CPU_A8 		PORTEbits.RE2
+#define CPU_A9		PORTCbits.RC0
+#define CPU_A10 	PORTCbits.RC1
+#define CPU_A11 	PORTCbits.RC2
+#define CPU_A12 	PORTDbits.RD0
+#define CPU_A13 	PORTDbits.RD1
+#define CPU_A14 	PORTDbits.RD2
+#define CPU_A15 	PORTDbits.RD3
 
 
 void main(void) {
@@ -27,34 +51,63 @@ void main(void) {
 	ADCON1  				= 0x0F; // Digital I/O
 	CMCON 					= 0x07; // No Comparators
 	CCP1CON 				= 0; 	// No PWMs
+	SPPCON 					= 0; 	// No SPP
 
-	// TODO: Why did I ever add this?
-	PORTEbits.RDPU 			= 0;  	// Disable PORTD pull ups
+
+	// TODO: Clean this stuff up.
+	TRISBbits.TRISB4 = OUTPUT;
+	TRISBbits.TRISB3 = OUTPUT;
+	TRISBbits.TRISB2 = OUTPUT;
+	TRISBbits.TRISB1 = OUTPUT;
+	TRISBbits.TRISB0 = OUTPUT;
+	TRISDbits.TRISD7 = OUTPUT;
+	TRISDbits.TRISD6 = OUTPUT;
+	TRISDbits.TRISD5 = OUTPUT;
+	TRISDbits.TRISD4 = OUTPUT;
+	TRISAbits.TRISA6 = OUTPUT;
+	TRISC |= CPU_RW;
+	TRISC |= CPU_IRQ;
+	TRISAbits.TRISA0 = INPUT;
+	TRISAbits.TRISA1 = INPUT;
+	TRISAbits.TRISA2 = INPUT;
+	TRISAbits.TRISA3 = INPUT;
+	TRISAbits.TRISA4 = INPUT;
+	TRISAbits.TRISA5 = INPUT;
+	TRISEbits.TRISE0 = INPUT;
+	TRISEbits.TRISE1 = INPUT;
+	TRISEbits.TRISE2 = INPUT;
+	TRISCbits.TRISC0 = INPUT;
+	TRISCbits.TRISC1 = INPUT;
+	TRISCbits.TRISC2 = INPUT;
+	TRISDbits.TRISD0 = INPUT;
+	TRISDbits.TRISD1 = INPUT;
+	TRISDbits.TRISD2 = INPUT;
+	TRISDbits.TRISD3 = INPUT;
 
 	
-	uart_init();
+	//uart_init();
 
 
-	uart_puts("Hello, World!\n");
-	uart_puts("Send '0' to turn LED off; send '1' to turn LED on.\n");
+	// $EA on the data bus
+	CPU_D0 = 0;
+	CPU_D1 = 1;
+	CPU_D2 = 0;
+	CPU_D3 = 1;
+	CPU_D4 = 0;
+	CPU_D5 = 1;
+	CPU_D6 = 1;
+	CPU_D7 = 1;
 
 
-	LED_DIR 				= OUTPUT;
+	CPU_RST = 0;
+	delay1ktcy(50);
+	CPU_RST = 1;
 
 
 	while(1) {
-		u8 x = uart_getc();
-		
-		if(x == '0') {
-			LED_OFF;
-			uart_puts("LED off!\n");
-		} else if(x == '1') {
-			LED_ON;
-			uart_puts("LED on!\n");
-		} else {
-			uart_puts("Unknown command: '");
-			uart_putc(x);
-			uart_puts("'\n");
-		}
+		delay10ktcy(2);
+		CPU_CLK = 1;
+		delay10ktcy(2);
+		CPU_CLK = 0;
 	}
 }
