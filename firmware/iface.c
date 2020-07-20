@@ -1,8 +1,5 @@
 #define CPU_CLK 		LATDbits.LATD4
 #define CPU_RST  		LATAbits.LATA6
-// God damnit, SDCC...
-//#define CPU_RW			0x20 // PORTC5
-//#define CPU_IRQ 		0x10 // PORTC4
 #define CPU_RW			PORTCbits.RC5
 #define CPU_IRQ 		PORTCbits.RC4
 
